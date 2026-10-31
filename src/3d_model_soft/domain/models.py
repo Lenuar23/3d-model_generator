@@ -2,6 +2,8 @@ from dataclasses import dataclass
 import math
 from numbers import Integral
 
+import numpy as np
+
 
 @dataclass(frozen=True)
 class Camera:
@@ -28,3 +30,41 @@ class Camera:
             value = getattr(self, name)
             if isinstance(value, bool) or not isinstance(value, Integral) or value <= 0:
                 raise ValueError(f"{name} must be a positive integer")
+
+
+@dataclass(frozen=True)
+class View:
+    """Calibrated silhouette; mask is boolean with shape (height, width)."""
+
+    camera: Camera
+    mask: np.ndarray
+
+    def __post_init__(self) -> None:
+        if not isinstance(self.camera, Camera):
+            raise ValueError("camera must be a Camera")
+        if (not isinstance(self.mask, np.ndarray) or self.mask.dtype != np.bool_
+                or self.mask.shape != (self.camera.height, self.camera.width)):
+            raise ValueError("mask must be a boolean array matching camera height/width")
+
+
+@dataclass(frozen=True)
+class VoxelGrid:
+    """XYZ occupancy; origin is the minimum corner, spacing is per-axis size.
+
+    Sample (i, j, k) represents origin + (index + 0.5) * spacing.
+    """
+
+    occupancy: np.ndarray
+    origin: tuple[float, float, float]
+    spacing: tuple[float, float, float]
+
+    def __post_init__(self) -> None:
+        if (not isinstance(self.occupancy, np.ndarray) or self.occupancy.dtype != np.bool_
+                or self.occupancy.ndim != 3 or min(self.occupancy.shape) < 1):
+            raise ValueError("occupancy must be a nonempty 3D boolean array")
+        for name in ("origin", "spacing"):
+            values = np.asarray(getattr(self, name), dtype=float)
+            if values.shape != (3,) or not np.isfinite(values).all():
+                raise ValueError(f"{name} must contain three finite values")
+            if name == "spacing" and (values <= 0).any():
+                raise ValueError("spacing must be positive")

@@ -86,15 +86,15 @@ infrastructure (реалізує інтерфейси з domain)
 
 ## Студент 1 (Мікс)
 
-- [ ] **Каркас шарів і інтерфейси**
+- [x] **Каркас шарів і інтерфейси**
   Гілка: `feat/project-skeleton`
   Що в ній: папки `domain/services/infrastructure/app/ui`, `models.py`, `interfaces.py`, заглушки функцій, `.gitignore`, README.
 
-- [ ] **Модель камери**
+- [x] **Модель камери**
   Гілка: `feat/camera-model`
   Що в ній: `services/camera_math.py`, `project(points_3d, camera) -> pixels`, тести проєкції.
 
-- [ ] **Синтетичні дані**
+- [x] **Синтетичні дані**
   Гілка: `feat/synthetic-data`
   Що в ній: скрипт, який рендерить силуети готового 3D-об'єкта з тих самих кутів, що й Zero123++; це ground truth для тестів.
 
