@@ -7,7 +7,9 @@ authors = [
     { name = "youngboy21178", email = "maksym.melnyk.o.2007@gmail.com" }
 ]
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "numpy>=2.5.4",
+]
 
 [project.scripts]
 3d-model-soft = "3d_model_soft:main"
