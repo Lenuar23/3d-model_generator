@@ -49,11 +49,12 @@ def marching_cubes(grid: VoxelGrid) -> Mesh:
     return Mesh(vertices, faces)
 
 
-def _compact(vertices: np.ndarray, faces: np.ndarray) -> Mesh:
+def _compact(vertices: np.ndarray, faces: np.ndarray, colors: np.ndarray | None = None) -> Mesh:
     if not len(faces):
         return _empty_mesh()
     used, remapped = np.unique(faces, return_inverse=True)
-    return Mesh(vertices[used].copy(), remapped.reshape(-1, 3))
+    return Mesh(vertices[used].copy(), remapped.reshape(-1, 3),
+                None if colors is None else colors[used].copy())
 
 
 def clean_mesh(mesh: Mesh, *, min_component_faces: int = 0,
@@ -92,7 +93,7 @@ def clean_mesh(mesh: Mesh, *, min_component_faces: int = 0,
     labels = np.array([find(int(a)) for a in faces[:, 0]])
     _, components, counts = np.unique(labels, return_inverse=True, return_counts=True)
     threshold = max(min_component_faces, counts.max() * min_component_ratio)
-    return _compact(mesh.vertices, faces[counts[components] >= threshold])
+    return _compact(mesh.vertices, faces[counts[components] >= threshold], mesh.colors)
 
 
 def _edges(faces: np.ndarray) -> np.ndarray:
@@ -113,7 +114,7 @@ def smooth_mesh(mesh: Mesh, *, iterations: int = 3,
         raise ValueError("require 0 < lambda < 1 and -1 < mu < -lambda")
     vertices = mesh.vertices.copy()
     if not len(mesh.faces) or not iterations:
-        return Mesh(vertices, mesh.faces.copy())
+        return Mesh(vertices, mesh.faces.copy(), None if mesh.colors is None else mesh.colors.copy())
     edges = _edges(mesh.faces)
     directed = np.concatenate((edges, edges[:, ::-1]))
     degree = np.bincount(directed[:, 0], minlength=len(vertices))
@@ -127,7 +128,7 @@ def smooth_mesh(mesh: Mesh, *, iterations: int = 3,
             sums = np.zeros_like(vertices)
             np.add.at(sums, directed[:, 0], vertices[directed[:, 1]])
             vertices[movable] += factor * (sums[movable] / degree[movable, None] - vertices[movable])
-    return Mesh(vertices, mesh.faces.copy())
+    return Mesh(vertices, mesh.faces.copy(), None if mesh.colors is None else mesh.colors.copy())
 
 
 def vertex_normals(mesh: Mesh) -> np.ndarray:

@@ -102,7 +102,7 @@ infrastructure (реалізує інтерфейси з domain)
   Гілка: `feat/space-carving`
   Що в ній: `services/carving.py`, voxel grid, відсікання вокселів за масками, тест на синтетиці.
 
-- [ ] **Побудова mesh**
+- [x] **Побудова mesh**
   Гілка: `feat/meshing`
   Що в ній: `services/meshing.py`, marching cubes, згладжування, видалення дрібних артефактів.
 
