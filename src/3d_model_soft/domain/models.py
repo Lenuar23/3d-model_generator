@@ -34,10 +34,11 @@ class Camera:
 
 @dataclass(frozen=True)
 class View:
-    """Calibrated silhouette; mask is boolean with shape (height, width)."""
+    """Calibrated silhouette and optional uint8 sRGB image (height, width, 3)."""
 
     camera: Camera
     mask: np.ndarray
+    image: np.ndarray | None = None
 
     def __post_init__(self) -> None:
         if not isinstance(self.camera, Camera):
@@ -45,6 +46,11 @@ class View:
         if (not isinstance(self.mask, np.ndarray) or self.mask.dtype != np.bool_
                 or self.mask.shape != (self.camera.height, self.camera.width)):
             raise ValueError("mask must be a boolean array matching camera height/width")
+        if self.image is not None and (
+            not isinstance(self.image, np.ndarray) or self.image.dtype != np.uint8
+            or self.image.shape != (self.camera.height, self.camera.width, 3)
+        ):
+            raise ValueError("image must be a uint8 RGB array matching camera height/width")
 
 
 @dataclass(frozen=True)
@@ -72,10 +78,11 @@ class VoxelGrid:
 
 @dataclass(frozen=True)
 class Mesh:
-    """World-space vertices (N, 3) and outward-wound triangle indices (M, 3)."""
+    """World vertices, outward triangle indices and optional uint8 sRGB colors."""
 
     vertices: np.ndarray
     faces: np.ndarray
+    colors: np.ndarray | None = None
 
     def __post_init__(self) -> None:
         if (not isinstance(self.vertices, np.ndarray) or self.vertices.ndim != 2
@@ -87,3 +94,8 @@ class Mesh:
             raise ValueError("faces must be an integer (M, 3) array")
         if self.faces.size and (self.faces.min() < 0 or self.faces.max() >= len(self.vertices)):
             raise ValueError("face indices must reference existing vertices")
+        if self.colors is not None and (
+            not isinstance(self.colors, np.ndarray) or self.colors.dtype != np.uint8
+            or self.colors.shape != (len(self.vertices), 3)
+        ):
+            raise ValueError("colors must be a uint8 RGB array with one row per vertex")
