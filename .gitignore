@@ -9,3 +9,7 @@ wheels/
 # Virtual environments
 .venv
 .env
+
+# Generated reconstruction fixtures and exports
+data/
+*.glb
