@@ -68,3 +68,22 @@ class VoxelGrid:
                 raise ValueError(f"{name} must contain three finite values")
             if name == "spacing" and (values <= 0).any():
                 raise ValueError("spacing must be positive")
+
+
+@dataclass(frozen=True)
+class Mesh:
+    """World-space vertices (N, 3) and outward-wound triangle indices (M, 3)."""
+
+    vertices: np.ndarray
+    faces: np.ndarray
+
+    def __post_init__(self) -> None:
+        if (not isinstance(self.vertices, np.ndarray) or self.vertices.ndim != 2
+                or self.vertices.shape[1] != 3 or self.vertices.dtype.kind != "f"
+                or not np.isfinite(self.vertices).all()):
+            raise ValueError("vertices must be a finite floating-point (N, 3) array")
+        if (not isinstance(self.faces, np.ndarray) or self.faces.ndim != 2
+                or self.faces.shape[1] != 3 or self.faces.dtype.kind not in "iu"):
+            raise ValueError("faces must be an integer (M, 3) array")
+        if self.faces.size and (self.faces.min() < 0 or self.faces.max() >= len(self.vertices)):
+            raise ValueError("face indices must reference existing vertices")

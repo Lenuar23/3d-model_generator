@@ -98,7 +98,7 @@ infrastructure (реалізує інтерфейси з domain)
   Гілка: `feat/synthetic-data`
   Що в ній: скрипт, який рендерить силуети готового 3D-об'єкта з тих самих кутів, що й Zero123++; це ground truth для тестів.
 
-- [ ] **Space carving**
+- [x] **Space carving**
   Гілка: `feat/space-carving`
   Що в ній: `services/carving.py`, voxel grid, відсікання вокселів за масками, тест на синтетиці.
 
