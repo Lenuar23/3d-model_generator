@@ -3,6 +3,15 @@
 Навчальний проєкт реконструкції 3D з фото. План і розподіл завдань —
 у [project_plan.md](project_plan.md).
 
+## Тестові фото
+
+[Набір 10 фотографій](docs/test_photos.md) охоплює прості та складні форми,
+блискучі й прозорі предмети. Джерела, авторство, ліцензії та контрольні суми —
+у [маніфесті](docs/test_photos_manifest.json). Завантаження:
+`python scripts/download_test_photos.py`; перевірка без мережі:
+`python scripts/download_test_photos.py --check`.
+Фото зберігаються локально в `data/test_photos/` та ігноруються Git.
+
 ## Модель камери
 
 `services/camera_math.py` реалізує `extrinsics(camera)` та
