@@ -11,6 +11,11 @@ dependencies = [
     "numpy>=2.5.4",
 ]
 
+[project.optional-dependencies]
+background-removal = [
+    "rembg[cpu]>=2.0.86,<3",
+]
+
 [project.scripts]
 3d-model-soft = "3d_model_soft:main"
 

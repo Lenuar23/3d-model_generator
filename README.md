@@ -3,6 +3,50 @@
 Навчальний проєкт реконструкції 3D з фото. План і розподіл завдань —
 у [project_plan.md](project_plan.md).
 
+## Видалення фону
+
+CPU-залежності встановлюються окремо; для алгоритмів реконструкції вони не потрібні:
+
+```powershell
+uv sync --extra background-removal
+# Або через Python вашого середовища:
+python -m pip install -e ".[background-removal]"
+```
+
+`domain.interfaces.BackgroundRemover` визначає `remove(image) -> RGBA`:
+вхід — NumPy `uint8` RGB/RGBA `(H, W, 3/4)` із додатними розмірами;
+вихід — новий `uint8` RGBA `(H, W, 4)` того самого розміру.
+Альфа-канал — покриття переднього плану: 0 означає прозорість, 255 — непрозорість.
+Вхідний масив не змінюється.
+
+```python
+import importlib
+import numpy as np
+from PIL import Image
+
+RembgRemover = importlib.import_module(
+    "3d_model_soft.infrastructure.ai.rembg_remover"
+).RembgRemover
+remover = RembgRemover()  # Локальна модель u2net, CPU.
+with Image.open("photo.jpg") as image:
+    rgba = remover.remove(np.array(image.convert("RGB")))
+Image.fromarray(rgba).save("foreground.png")
+```
+
+Імпорт адаптера та створення об'єкта не завантажують модель. Перший `remove`
+завантажує ваги й створює ONNX-сесію; наступні виклики цього об'єкта повторно
+використовують її. Для першого запуску потрібні інтернет і доступний для запису
+кеш rembg. Можна вибрати компактну модель `RembgRemover("u2netp")`.
+Об'єкт розрахований на послідовні виклики. Невідоме ім'я моделі або збій
+завантаження/інференсу дає `RuntimeError` зі збереженою початковою причиною.
+
+У rembg 2.0.86 типовий кеш — `~/.rembg/models/<model>`; `REMBG_HOME` змінює
+кореневу папку, а заданий `U2NET_HOME` має пріоритет для сумісності зі старим кешем.
+Після завантаження ваги можна використовувати без мережі. Див.
+[офіційний rembg: бібліотека й перевикористання сесії](https://github.com/danielgatis/rembg#usage-as-a-library)
+та [налаштування кешу](https://github.com/danielgatis/rembg/blob/main/rembg/sessions/base.py).
+Блискучі й прозорі предмети потребують окремої перевірки якості маски.
+
 ## Модель камери
 
 `services/camera_math.py` реалізує `extrinsics(camera)` та
