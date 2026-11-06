@@ -3,6 +3,26 @@
 Навчальний проєкт реконструкції 3D з фото. План і розподіл завдань —
 у [project_plan.md](project_plan.md).
 
+## Сценарій генерації ракурсів
+
+`app.generate_views.generate_views(photo, seed, *, generator)` викликає
+переданий `ViewGenerator` і повертає шлях до готової папки ракурсів.
+Помилки генератора передаються викликаючому коду без приховування чи повторного запуску.
+Сценарій залежить лише від контракту домену; моделі та їхні залежності він не завантажує.
+
+```python
+from importlib import import_module
+
+generate_views = import_module("3d_model_soft.app.generate_views").generate_views
+# generator — попередньо налаштований об'єкт, що реалізує ViewGenerator.
+views_dir = generate_views("photo.jpg", seed=42, generator=generator)
+```
+
+Налаштування конкретного `Zero123ViewGenerator` описано в
+[інструкції завдання 5](https://github.com/Lenuar23/3d-model_generator/blob/b1a6d749e401996a0ddbe25d9d1dacd55621fe09/docs/view_generation.md).
+Його інфраструктурна реалізація знаходиться в гілці `feat/view-generator`.
+Цей сценарій можна перевіряти з будь-якою реалізацією контракту; він не вимагає GPU.
+
 ## Модель камери
 
 `services/camera_math.py` реалізує `extrinsics(camera)` та
