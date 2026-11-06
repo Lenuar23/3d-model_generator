@@ -1,0 +1,163 @@
+{
+  "verified_on": "2026-11-05",
+  "execution": "Local Windows CUDA using the notebook's conditioning and inference code",
+  "artifact_directory": "data/zero123_batch",
+  "status": "succeeded",
+  "model": "sudo-ai/zero123plus-v1.2",
+  "model_revision": "2da07e89919e1a130c9b5add1584c70c7aa065fd",
+  "pipeline": "sudo-ai/zero123plus-pipeline",
+  "pipeline_revision": "983e66d28a3637ddd8e3e2fd8165cdff32230872",
+  "mask_model": "u2netp",
+  "dataset_revision": "e2f81456de75b15aec6d4839bb1ecb9c44c73177",
+  "seed": 42,
+  "inference_steps": 28,
+  "guidance_scale": 4.0,
+  "vae_tiling": true,
+  "grid_size": [
+    640,
+    960
+  ],
+  "photos": [
+    {
+      "input": "data/test_photos/01_simple_apple.jpg",
+      "category": "simple",
+      "input_sha256": "60baaee8cff7502bc7cde3cefaf940247a8a9ee5bff7522efc515710b54f36ce",
+      "status": "succeeded",
+      "condition": "01-01_simple_apple-condition.png",
+      "preprocessing": "rembg_u2netp",
+      "grid": "01-01_simple_apple-grid.png",
+      "grid_sha256": "08f013e46d4de832620835b988bc2387813819f464d621d1bda8a625999d0117",
+      "seconds": 14.707,
+      "peak_vram_allocated_bytes": 4201074176
+    },
+    {
+      "input": "data/test_photos/02_simple_tennis_ball.jpg",
+      "category": "simple",
+      "input_sha256": "6b9a1d6d44e3d094342f9b40fd87ee4cdaa91db110c40831b95884b1dd714b4d",
+      "status": "succeeded",
+      "condition": "02-02_simple_tennis_ball-condition.png",
+      "preprocessing": "rembg_u2netp",
+      "grid": "02-02_simple_tennis_ball-grid.png",
+      "grid_sha256": "a0351cc45a2b408520a07bcf672ec5ac87928ce086eb4ca2d05b062909a1db03",
+      "seconds": 13.539,
+      "peak_vram_allocated_bytes": 4201074176
+    },
+    {
+      "input": "data/test_photos/03_simple_soap.jpg",
+      "category": "simple",
+      "input_sha256": "f89797dd43b26d8b326316d5146f1ec09a10dca77db134d5feb652102410f460",
+      "status": "succeeded",
+      "condition": "03-03_simple_soap-condition.png",
+      "preprocessing": "rembg_u2netp",
+      "grid": "03-03_simple_soap-grid.png",
+      "grid_sha256": "f1dedaf9338944ff500b24454277975a384f929df874c1010510f3018b653409",
+      "seconds": 13.79,
+      "peak_vram_allocated_bytes": 4201074176
+    },
+    {
+      "input": "data/test_photos/04_complex_pine_cone.jpg",
+      "category": "complex",
+      "input_sha256": "025755d5315216e00b1055601add2f3343ea65534747bcee133cdb2bcc577881",
+      "status": "succeeded",
+      "condition": "04-04_complex_pine_cone-condition.png",
+      "preprocessing": "rembg_u2netp",
+      "grid": "04-04_complex_pine_cone-grid.png",
+      "grid_sha256": "1700010143a99ae3e75a140bd3152c78449a9fbc0c7172c9ebaac3da074efa85",
+      "seconds": 13.69,
+      "peak_vram_allocated_bytes": 4201074176
+    },
+    {
+      "input": "data/test_photos/05_complex_rubber_duck.jpg",
+      "category": "complex",
+      "input_sha256": "c8e7263c128f3ca436c688ec056301b224b0919cbee6deea2af49e1d89139e36",
+      "status": "succeeded",
+      "condition": "05-05_complex_rubber_duck-condition.png",
+      "preprocessing": "rembg_u2netp",
+      "grid": "05-05_complex_rubber_duck-grid.png",
+      "grid_sha256": "097fe57ad7adbd5432489c1ecee6c32b929d8828d2dff2f0af6850f4b7dee169",
+      "seconds": 13.706,
+      "peak_vram_allocated_bytes": 4201074176
+    },
+    {
+      "input": "data/test_photos/06_complex_padlock.jpg",
+      "category": "complex",
+      "input_sha256": "9859fbc9f00bb089715aa50becfb4e9a8bd9216dee991e215277eeff99f7a2c3",
+      "status": "succeeded",
+      "condition": "06-06_complex_padlock-condition.png",
+      "preprocessing": "rembg_u2netp",
+      "grid": "06-06_complex_padlock-grid.png",
+      "grid_sha256": "f8eb118f59cb47c10401bf7baee8cbd67704926fda9b536527213b25a102f95e",
+      "seconds": 13.774,
+      "peak_vram_allocated_bytes": 4201074176
+    },
+    {
+      "input": "data/test_photos/07_shiny_spoon.jpg",
+      "category": "shiny",
+      "input_sha256": "2d13be76f2c0a343f973ddbb22cec9ea42d671ea2a8b4c0d2b1e494bb35fe13d",
+      "status": "succeeded",
+      "condition": "07-07_shiny_spoon-condition.png",
+      "preprocessing": "rembg_u2netp",
+      "grid": "07-07_shiny_spoon-grid.png",
+      "grid_sha256": "8041dbb125bae5d0cd2bb78c63932e2c7da378cbc5ba11c84f623bd2ebfb5fa7",
+      "seconds": 13.709,
+      "peak_vram_allocated_bytes": 4201074176
+    },
+    {
+      "input": "data/test_photos/08_shiny_silver_teapot.jpg",
+      "category": "shiny",
+      "input_sha256": "dbf5a28ac58116da57814b6f99de11f17d222fff791d38d88b9aea86b9f5479e",
+      "status": "succeeded",
+      "condition": "08-08_shiny_silver_teapot-condition.png",
+      "preprocessing": "rembg_u2netp",
+      "grid": "08-08_shiny_silver_teapot-grid.png",
+      "grid_sha256": "cf89402b7c186fc544ac45a4d8463553af9bb184dbd2b82f00f414232d5a91ad",
+      "seconds": 13.853,
+      "peak_vram_allocated_bytes": 4201074176
+    },
+    {
+      "input": "data/test_photos/09_transparent_bottle.jpg",
+      "category": "transparent",
+      "input_sha256": "9121c44677d384f1dd7bf1fa9d778c524e44c2b669529f5f8189d4128dcd947e",
+      "status": "succeeded",
+      "condition": "09-09_transparent_bottle-condition.png",
+      "preprocessing": "rembg_u2netp",
+      "grid": "09-09_transparent_bottle-grid.png",
+      "grid_sha256": "7161e97cfe9fb5e44b9d316efe9b6c9db4ed7f610deeb9b0d3fe8c5311d6cf52",
+      "seconds": 13.965,
+      "peak_vram_allocated_bytes": 4201074176
+    },
+    {
+      "input": "data/test_photos/10_transparent_goblet.jpg",
+      "category": "transparent",
+      "input_sha256": "388a1880f3427a2ee91f55e03313bb439cb4b706daa9cff4657d876dc2331c58",
+      "status": "succeeded",
+      "condition": "10-10_transparent_goblet-condition.png",
+      "preprocessing": "rembg_u2netp",
+      "grid": "10-10_transparent_goblet-grid.png",
+      "grid_sha256": "bc6b2cd28b2af8d9bc5f9ccf15ca83b117f74eec3e56f8a07b4188ebeebf24dc",
+      "seconds": 13.985,
+      "peak_vram_allocated_bytes": 4201074176
+    }
+  ],
+  "environment": {
+    "python": "3.12.11",
+    "gpu": "NVIDIA GeForce RTX 4050 Laptop GPU",
+    "cuda": "12.1",
+    "vram_free_bytes_at_start": 5326766080,
+    "vram_total_bytes": 6438780928,
+    "packages": {
+      "torch": "2.5.1+cu121",
+      "torchvision": "0.20.1+cu121",
+      "diffusers": "0.27.2",
+      "transformers": "4.39.3",
+      "huggingface-hub": "0.25.2",
+      "accelerate": "0.27.2",
+      "numpy": "1.26.4",
+      "Pillow": "10.4.0",
+      "rembg": "2.0.61",
+      "onnxruntime": "1.20.1",
+      "safetensors": "0.4.5"
+    }
+  },
+  "succeeded": 10
+}

@@ -1,0 +1,19 @@
+--extra-index-url https://download.pytorch.org/whl/cu121
+torch==2.5.1+cu121
+torchvision==0.20.1+cu121
+diffusers==0.27.2
+transformers==4.39.3
+huggingface-hub==0.25.2
+accelerate==0.27.2
+safetensors==0.4.5
+numpy==1.26.4
+pillow==10.4.0
+rembg[cpu]==2.0.61
+onnxruntime==1.20.1
+opencv-python-headless==4.10.0.84
+scipy==1.14.1
+scikit-image==0.24.0
+pymatting==1.1.12
+numba==0.60.0
+llvmlite==0.43.0
+tokenizers==0.15.2
