@@ -3,6 +3,13 @@
 Навчальний проєкт реконструкції 3D з фото. План і розподіл завдань —
 у [project_plan.md](project_plan.md).
 
+## Підготовка ракурсів для реконструкції
+
+`Zero123ViewGenerator.generate_views(photo, seed)` створює шість PNG із
+прозорим тлом і `cameras.json` у новій папці `views`. `ViewsRepository`
+читає цей набір і повертає ракурси для реконструкції. Опис формату,
+налаштування ізольованого Zero123++ і приклад API є в [інструкції](docs/view_generation.md).
+
 ## Модель камери
 
 `services/camera_math.py` реалізує `extrinsics(camera)` та

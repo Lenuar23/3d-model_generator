@@ -134,23 +134,23 @@ infrastructure (реалізує інтерфейси з domain)
 
 ## Студент 2 (Мішікс)
 
-- [ ] **Colab і оточення**
+- [x] **Colab і оточення**
   Гілка: `chore/colab-setup`
   Що в ній: ноутбук у `notebooks/`, який клонує репо, ставить залежності й перевіряє GPU.
 
-- [ ] **Видалення фону**
+- [x] **Видалення фону**
   Гілка: `feat/bg-removal`
   Що в ній: `infrastructure/ai/rembg_remover.py`, клас реалізує `BackgroundRemover`, повертає RGBA.
 
-- [ ] **Тестові фото**
+- [x] **Тестові фото**
   Гілка: `chore/test-photos`
   Що в ній: 10 фото предметів (проста форма, складна, блискуча, прозора) у `data/test_photos/`; лише список/опис у репо, якщо файли важкі.
 
-- [ ] **Запуск Zero123++**
+- [x] **Запуск Zero123++**
   Гілка: `feat/zero123-notebook`
   Що в ній: ноутбук, який бере фото й видає сітку ракурсів, перевірено на всіх тестових фото.
 
-- [ ] **Нарізка ракурсів і cameras.json**
+- [x] **Нарізка ракурсів і cameras.json**
   Гілка: `feat/view-generator`
   Що в ній: `infrastructure/ai/zero123_generator.py` і `storage/views_repository.py`; сітка ріжеться на PNG, кожен проходить `remove_bg`, пишеться `cameras.json` за контрактом; `generate_views(photo, seed) -> views_dir`.
 
