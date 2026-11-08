@@ -1,4 +1,4 @@
-"""Strict visual hull: keep voxel centers inside every calibrated silhouette."""
+"""Silhouette carving with strict intersection or configurable K-of-N voting."""
 
 from collections.abc import Sequence
 from numbers import Integral
@@ -34,13 +34,16 @@ def create_grid(
     return VoxelGrid(np.ones(shape, dtype=bool), tuple(lower), tuple(spacing))
 
 
-def carve(views: Sequence[View], grid: VoxelGrid, *, chunk_size: int = 65536) -> VoxelGrid:
+def carve(views: Sequence[View], grid: VoxelGrid, *, chunk_size: int = 65536,
+          min_views: int | None = None) -> VoxelGrid:
     """Return a carved copy; never change input occupancy or masks.
 
     Project cell centers and sample the nearest pixel (floor(pixel + 0.5)).
     The image footprint is [-0.5, width-0.5) x [-0.5, height-0.5).
-    Nonfinite, behind-camera and out-of-frame points are carved away.
-    All views must contain the object; cropped/unreliable views can over-carve.
+    A voxel needs min_views silhouette votes; None means every view (strict).
+    Nonfinite, behind-camera, out-of-frame and background projections each
+    contribute zero votes, with the denominator fixed at len(views).
+    Smaller thresholds tolerate failed masks but may retain excess volume.
     Work is vectorized in chunks to bound temporary coordinate-array memory.
     """
     if not views:
@@ -50,6 +53,10 @@ def carve(views: Sequence[View], grid: VoxelGrid, *, chunk_size: int = 65536) ->
         raise ValueError("chunk_size must be a positive integer")
     if any(not isinstance(view, View) for view in views):
         raise ValueError("views must contain View objects")
+    required = len(views) if min_views is None else min_views
+    if (isinstance(required, bool) or not isinstance(required, Integral)
+            or not 1 <= required <= len(views)):
+        raise ValueError("min_views must be an integer between 1 and the number of views")
     result = grid.occupancy.copy()
     flat = result.reshape(-1)
     for start in range(0, flat.size, chunk_size):
@@ -59,9 +66,11 @@ def carve(views: Sequence[View], grid: VoxelGrid, *, chunk_size: int = 65536) ->
             continue
         indices = np.column_stack(np.unravel_index(active, result.shape))
         points = np.asarray(grid.origin) + (indices + 0.5) * np.asarray(grid.spacing)
-        keep = np.ones(len(active), dtype=bool)
-        for view in views:
-            candidates = np.flatnonzero(keep)
+        votes = np.zeros(len(active), dtype=np.intp)
+        for index, view in enumerate(views):
+            remaining = len(views) - index
+            # Stop testing voxels already accepted or unable to reach K.
+            candidates = np.flatnonzero((votes < required) & (votes + remaining >= required))
             if not candidates.size:
                 break
             pixels = project(points[candidates], view.camera)
@@ -71,6 +80,6 @@ def carve(views: Sequence[View], grid: VoxelGrid, *, chunk_size: int = 65536) ->
             hits = np.zeros(len(candidates), dtype=bool)
             uv = np.floor(pixels[in_frame] + 0.5).astype(np.intp)
             hits[in_frame] = view.mask[uv[:, 1], uv[:, 0]]
-            keep[candidates] = hits
-        flat[active] = keep
+            votes[candidates] += hits
+        flat[active] = votes >= required
     return VoxelGrid(result, grid.origin, grid.spacing)
