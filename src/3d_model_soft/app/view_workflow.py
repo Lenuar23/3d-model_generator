@@ -8,7 +8,17 @@ import struct
 from threading import Lock
 
 
-GenerateViews = Callable[[Path, int], Path]
+@dataclass(frozen=True)
+class GeneratedViews:
+    directory: Path
+    description: str
+
+
+class GenerationUnavailable(RuntimeError):
+    """A generation error whose message can be shown to the user."""
+
+
+GenerateViews = Callable[[Path, int], Path | GeneratedViews]
 Reconstruct = Callable[[Path], Path]
 
 
@@ -26,6 +36,7 @@ class GenerationRequest:
     photo: Path
     seed: int
     revision: int
+    regenerate: bool = False
 
 
 @dataclass(frozen=True)
@@ -37,8 +48,10 @@ class ReconstructionRequest:
 class ViewWorkflow:
     """Coordinate generation callbacks without coupling the app to Gradio or AI."""
 
-    def __init__(self, generate: GenerateViews, reconstruct: Reconstruct | None = None) -> None:
+    def __init__(self, generate: GenerateViews, reconstruct: Reconstruct | None = None, *,
+                 regenerate: GenerateViews | None = None) -> None:
         self._generate = generate
+        self._regenerate = regenerate or generate
         self._reconstruct = reconstruct
         self._lock = Lock()
 
@@ -66,25 +79,33 @@ class ViewWorkflow:
             if seed == session.seed:
                 seed = (seed + 1) % (2**63)
             session.seed = seed
-            session.views_dir = None
             session.revision += 1
             session.busy = True
-            return GenerationRequest(source, seed, session.revision)
+            return GenerationRequest(source, seed, session.revision, regenerate)
 
     def generate(self, request: GenerationRequest) -> tuple[Path, tuple[Path, ...]]:
-        directory = Path(self._generate(request.photo, request.seed)).resolve(strict=True)
+        result, previews = self.generate_with_description(request)
+        return result.directory, previews
+
+    def generate_with_description(self, request: GenerationRequest) -> tuple[GeneratedViews, tuple[Path, ...]]:
+        callback = self._regenerate if request.regenerate else self._generate
+        result = callback(request.photo, request.seed)
+        if not isinstance(result, GeneratedViews):
+            result = GeneratedViews(result, f"Згенеровано 6 ракурсів. Seed: {request.seed}.")
+        directory = Path(result.directory).resolve(strict=True)
         manifest = directory / "cameras.json"
         previews = tuple(directory / f"view_{index:02d}.png" for index in range(6))
         if any(path.is_symlink() or not path.is_file() for path in (manifest, *previews)):
             raise ValueError("Expected six view PNG files and cameras.json")
-        return directory, previews
+        return GeneratedViews(directory, result.description), previews
 
     def finish_generation(self, session: ViewSession, request: GenerationRequest,
                           views_dir: Path | None) -> bool:
         with self._lock:
             if request.revision != session.revision:
                 return False
-            session.views_dir = views_dir
+            if views_dir is not None:
+                session.views_dir = views_dir
             session.busy = False
             return True
 
