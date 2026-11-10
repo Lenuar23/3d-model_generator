@@ -35,14 +35,14 @@ def build_app(generate: GenerateViews, reconstruct: Reconstruct | None = None) -
         ready = session.photo is not None and not session.busy
         has_views = session.views_dir is not None
         return (
-            previews, model, status, gr.update(interactive=not session.busy),
+            previews, model, model, status, gr.update(interactive=not session.busy),
             gr.update(interactive=ready and not has_views),
             gr.update(interactive=ready and has_views),
             gr.update(interactive=ready and has_views and workflow.can_reconstruct),
         )
 
     def skip_screen():
-        return tuple(gr.skip() for _ in range(7))
+        return tuple(gr.skip() for _ in outputs)
 
     def reset(upload, session):
         workflow.set_photo(session, upload)
@@ -93,7 +93,7 @@ def build_app(generate: GenerateViews, reconstruct: Reconstruct | None = None) -
                 target = temporary / result.name
                 copyfile(result, target)
                 model = str(target)
-                text = "Модель готова. Завантажте файл GLB."
+                text = "Модель готова. Перегляньте її у 3D або завантажте GLB."
             except Exception:
                 _LOG.exception("Reconstruction failed")
                 text = "Не вдалося реконструювати модель. Перевірте журнал запуску або спробуйте інші ракурси."
@@ -115,13 +115,15 @@ def build_app(generate: GenerateViews, reconstruct: Reconstruct | None = None) -
                     confirm_button = gr.Button("Підтвердити", interactive=False)
                 status = gr.Textbox(label="Стан", value=message("Завантажте фото предмета."),
                                     interactive=False, lines=2)
-                model = gr.File(label="Модель GLB", interactive=False)
+                download = gr.File(label="Завантажити GLB", interactive=False)
             with gr.Column(scale=2, min_width=360):
+                viewer = gr.Model3D(label="Перегляд 3D-моделі", height=480, interactive=False)
                 gallery = gr.Gallery(label="Ракурси", columns=3, rows=2, height=520,
                                      object_fit="contain", format="png", interactive=False)
 
         inputs = [photo, session]
-        outputs = [gallery, model, status, photo, generate_button, regenerate_button, confirm_button]
+        outputs = [gallery, viewer, download, status, photo,
+                   generate_button, regenerate_button, confirm_button]
         gr.on([photo.upload, photo.clear], fn=reset, inputs=inputs, outputs=outputs,
               queue=False, api_name="reset", api_visibility="private")
         work = dict(inputs=inputs, outputs=outputs, concurrency_id="photo3d-work",

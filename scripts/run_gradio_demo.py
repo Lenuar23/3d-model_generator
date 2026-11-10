@@ -8,6 +8,7 @@ from functools import partial
 import hashlib
 import importlib
 import json
+import os
 from pathlib import Path
 import shutil
 import sys
@@ -118,7 +119,8 @@ def main():
     print("=" * 60)
 
     app = ui.build_app(generate_views_unified, reconstruct=demo_reconstruct_wrapper)
-    app.launch(server_name="127.0.0.1", server_port=7860, share=False, inbrowser=True)
+    host = os.environ.get("GRADIO_SERVER_NAME", "127.0.0.1")
+    app.launch(server_name=host, server_port=7860, share=False, inbrowser=host == "127.0.0.1")
 
 
 if __name__ == "__main__":
