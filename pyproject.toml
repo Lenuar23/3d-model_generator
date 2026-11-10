@@ -11,6 +11,11 @@ dependencies = [
     "numpy>=2.5.4",
 ]
 
+[project.optional-dependencies]
+ui = [
+    "gradio==6.31.0",
+]
+
 [project.scripts]
 3d-model-soft = "3d_model_soft:main"
 
