@@ -1,6 +1,8 @@
 services:
   web:
-    build: .
+    build:
+      context: .
+      target: web
     ports:
       - "127.0.0.1:7860:7860"
     volumes:

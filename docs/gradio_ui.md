@@ -1,5 +1,38 @@
 # Локальний інтерфейс Gradio
 
+## MVP. Власне фото → 3D-модель
+
+Запустіть Docker Desktop у режимі Linux-контейнерів із доступом до NVIDIA GPU.
+У корені проєкту виконайте:
+
+```powershell
+docker compose -f compose.yaml -f compose.mvp.yaml up --build
+```
+
+Відкрийте [сайт](http://localhost:7860/), завантажте фото одного предмета
+й натисніть **Побудувати 3D-модель**. Готову модель можна обертати
+в браузері й завантажити як GLB. Hunyuan3D-2mini будує форму
+безпосередньо з фото. Під час першого запуску потрібен доступ до
+інтернету для завантаження ваг. Вони кешуються в локальній папці `data/`.
+На RTX 4060 Laptop із 8 ГБ відеопам’яті пробна генерація геометрії
+працювала в CUDA FP16. GLB містить колір вершин. Видима спереду поверхня
+отримує колір із фото, а приховані ділянки — базовий колір предмета.
+
+Якщо Hunyuan уже встановлений у локальній папці `data/hunyuan_runtime`,
+той самий сайт можна запустити у Windows. Команди нижче використовують
+наявний код Hunyuan та кеш ваг із локального експерименту.
+
+```powershell
+New-Item -ItemType Directory -Force data/mvp_temp | Out-Null
+$env:TEMP = (Resolve-Path data/mvp_temp).Path
+$env:TMP = $env:TEMP
+$env:GRADIO_TEMP_DIR = $env:TEMP
+$env:HUNYUAN_PYTHON = (Resolve-Path data/hunyuan_runtime/Scripts/python.exe).Path
+$env:PYTHONPATH = (Resolve-Path data/hunyuan_source).Path
+$env:HF_HOME = (Resolve-Path data/hunyuan_cache).Path
+.\.venv\Scripts\python.exe scripts/run_photo_to_3d.py
+```
+
 ## Запуск у Docker
 
 У корені проєкту виконайте:

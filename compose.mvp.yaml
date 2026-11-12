@@ -1,0 +1,5 @@
+services:
+  web:
+    build:
+      target: photo-to-3d
+    gpus: all
