@@ -82,3 +82,5 @@ $env:NUMBA_DISABLE_JIT = "1"
 `data/hunyuan_runtime/Scripts/python.exe -m unittest discover -s tests -p test_texture_bake.py -v`
 
 Багаторакурсний Paint: [локальне налаштування](docs/local_paint.md).
+
+[Текстури до та після: зображення й пояснення](docs/texture_comparison.md).

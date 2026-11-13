@@ -80,3 +80,8 @@ Hunyuan3D-2mini — навчена модель генерації форми з
 - Новий GLB — `data/hunyuan_spoon/model.glb`.
 - Числові результати збережені поруч із зображеннями у [hunyuan_metrics.json](assets/reconstruction/hunyuan_metrics.json) та [silhouette_metrics.json](assets/reconstruction/silhouette_metrics.json).
 - Папка `data/` виключена з Git. Цей Markdown і зображення в `docs/assets/reconstruction/` можна зберігати в репозиторії та переносити разом.
+
+## Наступний етап: текстурування
+
+Окреме [порівняння текстур до та після Hunyuan Paint](texture_comparison.md)
+показує результати на яблуці, згенеровані ракурси та обмеження методу.

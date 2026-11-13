@@ -1,0 +1,41 @@
+{
+  "source_faces": 578388,
+  "output_faces": 60000,
+  "view_size": 512,
+  "texture_size": 1024,
+  "peak_cuda_allocated_bytes": 4393466880,
+  "camera_azimuths": [
+    0,
+    90,
+    180,
+    270,
+    0,
+    180
+  ],
+  "camera_elevations": [
+    0,
+    0,
+    0,
+    0,
+    90,
+    -90
+  ],
+  "comparison": {
+    "before": "BLIP + Stable Diffusion material patch, UV baking",
+    "after": "Hunyuan Paint Turbo, geometry-conditioned six views",
+    "angles_degrees": [
+      0,
+      120,
+      240
+    ],
+    "render": "Orthographic CPU raster, unlit colors, each view fitted to frame; no image retouching",
+    "geometry_note": "Before: original 578388 triangles. After: simplified copy with 60000 triangles. Not a controlled texture-only comparison."
+  },
+  "asset_sha256": {
+    "before_projection.png": "3ff801937e367fb0985b90a494e8d7856ba22bdb2345e34a9b7e8575f95e990b",
+    "before_material_atlas.png": "c535489a788706bdbdadf8b5f250ceb90d19c6e388fc7edc267527ee55de17bb",
+    "after_multiview.png": "3a60da3c9ab678bee0c4a3994ce8e339238fafa4318530666b161acc758c1cbf",
+    "generated_views.png": "1a8679d7ddd0e4d4c2afd4620e6941c95286d428600df4c069a63242e0d88794",
+    "input.jpg": "60baaee8cff7502bc7cde3cefaf940247a8a9ee5bff7522efc515710b54f36ce"
+  }
+}
