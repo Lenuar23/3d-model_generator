@@ -110,4 +110,3 @@ def bake_texture(mesh, photo, material, *, size=1024):
         material=trimesh.visual.material.PBRMaterial(baseColorTexture=image, metallicFactor=0., roughnessFactor=.65))
     output = trimesh.Trimesh(vertices=points, faces=faces, vertex_normals=normals, visual=visual, process=False)
     return output, image
-
