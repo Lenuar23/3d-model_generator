@@ -1,2 +1,1 @@
-def main() -> None:
-    print("Hello from 3d-model-soft!")
+"""Hunyuan3D photo-to-model application."""

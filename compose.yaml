@@ -2,7 +2,8 @@ services:
   web:
     build:
       context: .
-      target: web
+      target: photo-to-3d
+    gpus: all
     ports:
       - "127.0.0.1:7860:7860"
     volumes:

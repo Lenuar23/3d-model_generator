@@ -1,7 +1,7 @@
 [project]
 name = "3d-model-soft"
 version = "0.1.0"
-description = "Add your description here"
+description = "Single-photo 3D generation with Hunyuan3D"
 readme = "README.md"
 authors = [
     { name = "youngboy21178", email = "maksym.melnyk.o.2007@gmail.com" }
@@ -15,9 +15,6 @@ dependencies = [
 ui = [
     "gradio==6.31.0",
 ]
-
-[project.scripts]
-3d-model-soft = "3d_model_soft:main"
 
 [build-system]
 requires = ["uv_build>=0.12.17,<0.13.0"]

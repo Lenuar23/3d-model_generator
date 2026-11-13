@@ -13,7 +13,7 @@ COPY src ./src
 COPY scripts ./scripts
 
 EXPOSE 7860
-CMD ["/app/.venv/bin/python", "scripts/run_gradio_demo.py"]
+CMD ["/app/.venv/bin/python", "scripts/run_photo_to_3d.py"]
 
 FROM web AS photo-to-3d
 RUN apt-get update && apt-get install -y --no-install-recommends git libgl1 libglib2.0-0 libgomp1 \
