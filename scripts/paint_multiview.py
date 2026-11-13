@@ -30,6 +30,15 @@ def main():
     from hy3dgen.texgen.pipelines import Hunyuan3DPaintPipeline, Hunyuan3DTexGenConfig
     if not torch.cuda.is_available():
         raise RuntimeError("CUDA GPU required")
+    if not args.weights.exists() or os.environ.get("HUNYUAN_PAINT_DOWNLOAD") == "1":
+        from huggingface_hub import snapshot_download
+        snapshot_download(
+            "tencent/Hunyuan3D-2",
+            revision="9cd649ba6913f7a852e3286bad86bfa9a2d83dcf",
+            allow_patterns=["hunyuan3d-delight-v2-0/*", "hunyuan3d-paint-v2-0-turbo/*"],
+            local_dir=args.weights,
+            max_workers=2,
+        )
     args.output.mkdir(parents=True, exist_ok=False)
     with Image.open(args.photo) as source:
         image = ImageOps.exif_transpose(source).convert("RGBA")

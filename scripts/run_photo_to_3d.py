@@ -15,7 +15,7 @@ ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT / "src"))
 
 
-def generate(photo, mirror_back=False):
+def generate(photo, mirror_back=False, paint=False):
     if not photo:
         raise gr.Error("Спочатку завантажте фото.")
     yield None, None, "Будуємо 3D-модель… Перший запуск завантажує ваги."
@@ -27,6 +27,14 @@ def generate(photo, mirror_back=False):
             if mirror_back:
                 command.append("--mirror-back")
             subprocess.run(command, check=True, timeout=1800)
+            if paint:
+                yield None, None, "Текстуруємо модель за шістьма ракурсами…"
+                output = Path(directory) / "paint"
+                subprocess.run(
+                    [python, str(ROOT / "scripts/paint_multiview.py"), photo, str(model), str(output)],
+                    check=True, timeout=3600,
+                )
+                model = output / "model.glb"
             if not model.is_file() or model.stat().st_size <= 12:
                 raise ValueError("Missing or incomplete GLB")
             # Gradio can serve a path already under GRADIO_TEMP_DIR as-is.
@@ -50,13 +58,15 @@ def build_app():
                 photo = gr.Image(type="filepath", image_mode=None, sources=["upload"],
                                  label="Фото предмета", height=320)
                 mirror_back = gr.Checkbox(label="Колір з обох боків (для округлих предметів)")
+                paint = gr.Checkbox(label="Текстурувати з Hunyuan Paint",
+                                    value=os.environ.get("HUNYUAN_PAINT_DEFAULT") == "1")
                 button = gr.Button("Побудувати 3D-модель", variant="primary")
                 status = gr.Markdown("Завантажте фото одного предмета.")
                 download = gr.File(label="Завантажити GLB", interactive=False)
             viewer = gr.Model3D(label="3D-модель", height=480, interactive=False,
                                 clear_color=(0.92, 0.94, 0.97, 1))
         outputs = [viewer, download, status]
-        button.click(generate, [photo, mirror_back], outputs, concurrency_limit=1,
+        button.click(generate, [photo, mirror_back, paint], outputs, concurrency_limit=1,
                      trigger_mode="once", api_visibility="private")
         photo.clear(lambda: (None, None, "Завантажте фото одного предмета."), outputs=outputs)
     return app.queue(default_concurrency_limit=1)

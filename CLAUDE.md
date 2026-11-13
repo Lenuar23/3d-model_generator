@@ -15,8 +15,9 @@ are historical, not the current implementation specification.
 - `scripts/run_photo_to_3d.py`: Gradio UI, model subprocess, cached GLB preview/download.
 - `scripts/generate_hunyuan.py`: background removal, shape generation, vertex coloring, export.
 - `scripts/photo_vertex_colors.py`: approximate single-photo vertex coloring.
-- `scripts/paint_multiview.py`: separate Hunyuan Paint experiment using an existing mesh,
-  geometry-conditioned views and a UV texture. It is NOT connected to the main UI yet.
+- `scripts/paint_multiview.py`: Hunyuan Paint using an existing mesh,
+  geometry-conditioned views and a UV texture. The UI runs it after shape generation
+  when the Paint checkbox is selected. Docker enables it by default.
 - `scripts/local_texture.py` and `scripts/texture_bake.py`: earlier experimental
   caption/material-patch approach; retained for comparison, not the preferred Paint path.
 - `src/3d_model_soft/ui/gradio_compat.py`: workaround for Model3D in pinned Gradio 6.31.0.
@@ -40,8 +41,8 @@ Read `docs/local_paint.md` before changing the GPU setup.
 
 These data/ environments, source checkouts, weights and build helpers are local assets,
 not included in a fresh clone. Verify paths before using the commands below.
-The Docker setup supports the shape-generation UI; do not assume it installs the
-additional Windows Paint toolchain or local source patches.
+The Docker image builds the rasterizer with Linux CUDA tools and downloads
+Paint weights on demand into the mounted data directory.
 
 ## Local commands (PowerShell, repository root)
 
