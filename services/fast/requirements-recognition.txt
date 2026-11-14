@@ -1,0 +1,9 @@
+# Isolated CLIP ViT-B/32 CPU recognition worker dependencies (.venv-recognition)
+--extra-index-url https://download.pytorch.org/whl/cpu
+torch==2.8.0+cpu
+transformers==4.53.3
+huggingface-hub==0.36.2
+safetensors==0.8.0
+tokenizers==0.21.4
+pillow==13.0.0
+numpy==2.5.4

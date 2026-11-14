@@ -1,0 +1,14 @@
+# Isolated Wonder3D CUDA 12.8 multi-view RGB + normal worker dependencies (.venv-wonder3d)
+--extra-index-url https://download.pytorch.org/whl/cu128
+torch==2.8.0+cu128
+torchvision==0.23.0+cu128
+diffusers==0.19.3
+transformers==4.45.2
+huggingface-hub==0.25.2
+accelerate==1.2.1
+einops==0.8.2
+safetensors==0.8.0
+tokenizers==0.20.3
+pillow==13.0.0
+numpy==2.5.4
+psutil==7.2.2

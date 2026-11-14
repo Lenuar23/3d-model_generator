@@ -5,7 +5,7 @@ import tempfile
 import unittest
 import numpy as np
 from PIL import Image
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "experiments" / "texture"))
 from texture_bake import triangle_pixels, bake_texture
 
 class RasterTests(unittest.TestCase):

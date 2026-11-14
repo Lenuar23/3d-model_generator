@@ -1,0 +1,43 @@
+.gradio-container {
+    max-width: 1320px !important;
+    margin: 0 auto;
+    padding: clamp(16px, 3vw, 40px) !important;
+}
+#workspace-title {
+    border-bottom: 1px solid var(--border-color-primary);
+    padding: 0 0 16px;
+    margin-bottom: 8px;
+}
+#workspace-title h1 {
+    font-size: 1.5rem;
+    font-weight: 650;
+    letter-spacing: -0.035em;
+    margin: 0;
+}
+#workspace {
+    gap: 16px;
+}
+#workspace .workspace-panel {
+    padding: 16px;
+    border: 1px solid var(--border-color-primary);
+    border-radius: 12px;
+    background: var(--block-background-fill);
+}
+#workspace h2 {
+    font-size: 1rem;
+    font-weight: 650;
+    margin: 0;
+}
+#preview-toolbar {
+    align-items: center;
+}
+#generation-status {
+    color: var(--body-text-color-subdued);
+    font-size: 0.875rem;
+}
+@media (max-width: 620px) {
+    #workspace .workspace-panel {
+        flex-basis: 100%;
+        min-width: 0 !important;
+    }
+}

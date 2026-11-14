@@ -2,9 +2,29 @@ services:
   web:
     build:
       context: .
-      target: photo-to-3d
-    gpus: all
+      target: web
+    environment:
+      FAST_GENERATOR_URL: http://fast:8080
+      GENERATOR_URL: http://generator:8080
+      HUNYUAN_PAINT_DEFAULT: "${HUNYUAN_PAINT_DEFAULT:-1}"
+    depends_on:
+      - generator
+      - fast
     ports:
-      - "127.0.0.1:7860:7860"
+      - "127.0.0.1:${WEB_PORT:-7861}:7860"
+  generator:
+    build:
+      context: .
+      target: generator
+    gpus: all
     volumes:
-      - ./data:/app/data
+      - ./data/hunyuan_cache:/app/data/hunyuan_cache
+      - ./data/hunyuan_paint_weights:/app/data/hunyuan_paint_weights
+      - ./data/u2net:/app/data/u2net
+  fast:
+    build:
+      context: .
+      target: fast
+    gpus: all
+    volumes:
+      - ./data/photo2mesh_models:/app/models

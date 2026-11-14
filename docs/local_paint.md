@@ -27,7 +27,7 @@ cuBLAS/cuSPARSE; логіка растеризації не змінюється
 ## Запуск
 
 ```powershell
-& .\data\hunyuan_runtime\Scripts\python.exe scripts/paint_multiview.py `
+& .\data\hunyuan_runtime\Scripts\python.exe services/generator/paint_multiview.py `
   data/test_photos/01_simple_apple.jpg "$HOME/Downloads/model.glb" data/paint_trial `
   --view-size 512 --max-faces 60000
 ```
