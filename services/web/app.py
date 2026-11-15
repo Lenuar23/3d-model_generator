@@ -1,5 +1,6 @@
 """Serve the direct photo-to-GLB workflow."""
 
+from html import escape
 import logging
 import os
 from pathlib import Path
@@ -39,6 +40,7 @@ def generate(photo, mirror_back=False, paint=False, mode=QUALITY):
                 timeout=httpx.Timeout(5500, connect=5),
             ) as response:
                 response.raise_for_status()
+                yield None, None, "Receiving the GLB file…"
                 with model.open("wb") as target:
                     for chunk in response.iter_bytes():
                         target.write(chunk)
@@ -58,7 +60,10 @@ EMPTY_STATUS = "Upload a photo of a single object."
 
 def generate_preview(photo, mirror_back, paint, mode):
     for model, file, status in generate(photo, mirror_back, paint, mode):
-        yield model, gr.update(value=file, interactive=file is not None), status
+        busy = status.endswith("…")
+        progress_bar = '<progress aria-label="Model generation in progress"></progress>' if busy else ""
+        status_html = f'<div role="status">{escape(status)}</div>{progress_bar}'
+        yield model, gr.update(value=file, interactive=file is not None), status_html
 
 
 def clear_preview():
@@ -81,7 +86,7 @@ def build_app():
                 paint = gr.Checkbox(label="Texture with Hunyuan Paint",
                                     value=os.environ.get("HUNYUAN_PAINT_DEFAULT") == "1")
                 button = gr.Button("Generate model", variant="primary")
-                status = gr.Markdown(EMPTY_STATUS, elem_id="generation-status")
+                status = gr.HTML(EMPTY_STATUS, elem_id="generation-status")
             with gr.Column(scale=3, min_width=300, elem_classes="workspace-panel"):
                 with gr.Row(equal_height=False, elem_id="preview-toolbar"):
                     gr.Markdown("## Preview")
@@ -91,7 +96,8 @@ def build_app():
                                     interactive=False, clear_color=(0.92, 0.94, 0.96, 1))
         outputs = [viewer, download, status]
         generation = button.click(generate_preview, [photo, mirror_back, paint, mode], outputs,
-                                  concurrency_limit=1, trigger_mode="once", api_visibility="private")
+                                  concurrency_limit=1, trigger_mode="once", show_progress="hidden",
+                                  api_visibility="private")
         photo.change(clear_preview, outputs=outputs, cancels=[generation],
                      queue=False, api_visibility="private")
         mode.change(

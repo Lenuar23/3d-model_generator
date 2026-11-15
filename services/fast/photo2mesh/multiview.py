@@ -60,18 +60,18 @@ def reconstruct_views(views: list[View], resolution: int = 48, extent: float = 1
                       output_root: Path = Path("outputs"), progress=None,
                       preparation_warnings: list[str] | None = None, prior=None,
                       texture_consensus: bool = False, normal_observations=(),
-                      normal_strength: float = .65, normal_basis=(1, 1, 1)) -> MultiResult:
+                      normal_strength: float = .65, normal_basis=(1, 1, 1), *, weighted=False) -> MultiResult:
     """Run the same deterministic geometry engine for either source of views."""
     start = perf_counter()
     warnings = list(dict.fromkeys([*(preparation_warnings or []), *consistency(views)]))
     if progress:
         progress(0.2, "Carving silhouettes")
     polyhedral = None
-    if prior is None and normal_observations and any(view.inferred for view in views):
+    if not weighted and prior is None and normal_observations and any(view.inferred for view in views):
         from .hull_quality import polyhedral_prior
 
         polyhedral = polyhedral_prior(normal_observations[0][0], normal_observations[0][1], normal_basis)
-    hull = carve(views, resolution, extent, prior=prior, polyhedral=polyhedral)
+    hull = carve(views, resolution, extent, prior=prior, polyhedral=polyhedral, weighted=weighted)
     initial = hull
     normal_report = None
     if normal_observations:

@@ -54,7 +54,7 @@ def consistency(views: list[View]) -> list[str]:
     return warnings
 
 
-def carve(views: list[View], resolution: int = 48, extent: float = 1.6, prior=None, polyhedral=None) -> Hull:
+def carve(views: list[View], resolution: int = 48, extent: float = 1.6, prior=None, polyhedral=None, *, weighted=False) -> Hull:
     """Keep voxels supported by silhouettes and discard unsupported components."""
     if not isinstance(resolution, int) or not 16 <= resolution <= 128:
         raise ValueError("Voxel resolution must be an integer between 16 and 128.")
@@ -80,6 +80,8 @@ def carve(views: list[View], resolution: int = 48, extent: float = 1.6, prior=No
     ortho_only = not any(view.camera.distance is not None for view in views)
     robust_perspective = all(view.inferred for view in views[1:]) and not views[0].inferred and not ortho_only
     misses = np.zeros(len(points), np.uint8)
+    support = np.zeros(len(points), np.float32) if weighted else None
+    visible_weight = np.zeros(len(points), np.float32) if weighted else None
     processed_masks = []
     stats = []
     for view_idx, view in enumerate(views):
@@ -98,16 +100,22 @@ def carve(views: list[View], resolution: int = 48, extent: float = 1.6, prior=No
         tolerant_side = (robust_perspective and view.inferred) or (
             polyhedral is not None and view_idx >= 2 and view.inferred
         )
-        if tolerant_side:
+        if weighted and view.inferred:
+            weight = view.texture_weight
+            visible_weight[checked] += weight
+            support[checked] += weight * mask[y[visible], x[visible]]
+        elif tolerant_side:
             misses[rejected] += 1
         else:
             occupied[rejected] = False
         stats.append({"view": view.name, "tested": len(checked),
-                      "carved": 0 if tolerant_side else len(rejected),
+                      "carved": 0 if tolerant_side or (weighted and view.inferred) else len(rejected),
                       "background_votes": len(rejected),
                       "outside_frame": int((~visible).sum())})
     unknown = int(np.count_nonzero(occupied & (tested < 2)))
-    if robust_perspective:
+    if weighted:
+        occupied &= (tested >= 3) & (visible_weight > 0) & (support >= 0.75 * visible_weight)
+    elif robust_perspective:
         occupied &= (tested >= 2) & (misses <= np.maximum(0, (tested.astype(int) - 1) // 4))
     elif polyhedral is not None:
         occupied &= (tested >= 2) & (misses <= 1)
@@ -128,7 +136,7 @@ def carve(views: list[View], resolution: int = 48, extent: float = 1.6, prior=No
         raise ValueError("Only a tiny intersection remains. Check the silhouettes and camera settings.")
     touches = any(np.take(volume, index, axis=dim).any() for dim in range(3) for index in (0, -1))
     pad_volume = np.pad(volume, 1)
-    if ortho_only:
+    if ortho_only and not weighted:
         struct = np.ones((3, 3, 3), dtype=bool)
         band_mask = ndimage.binary_dilation(pad_volume, structure=struct) & ~ndimage.binary_erosion(
             pad_volume, structure=struct)

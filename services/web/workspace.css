@@ -41,3 +41,10 @@
         min-width: 0 !important;
     }
 }
+#generation-status progress {
+    display: block;
+    width: 100%;
+    height: 8px;
+    margin-top: 8px;
+    accent-color: var(--color-accent);
+}

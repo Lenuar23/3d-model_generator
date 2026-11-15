@@ -17,7 +17,7 @@ from .hull_quality import agreement, rasterize, profile_prior
 from .image_processing import load_photo
 from .multiview import reconstruct_views
 from .pipeline import Settings, make_mask
-from .visual_hull import View
+from .visual_hull import View, carve
 
 CHECKPOINT = "flamehaze1115/wonder3d-v1.0@d6d2efc033a06a74d3761268de7295c97e6935d2"
 NAMES = ("front", "front_right", "right", "back", "left", "front_left")
@@ -144,7 +144,7 @@ def review_gallery(folder):
 
 def reconstruct_wonder(path, resolution=64, extent=1.8, strength=.65, *, reuse=None, excluded=(),
                        consensus=False, progress=None, strategy="Automatic", category=None,
-                       output_folder=None):
+                       output_folder=None, rank_only=False, weighted=False):
     """Produce or reuse paired views, carve the orthographic hull, then optionally refine it.
 
     ``reuse`` is a folder previously returned by :func:`generate_wonder`. ``excluded``
@@ -165,7 +165,7 @@ def reconstruct_wonder(path, resolution=64, extent=1.8, strength=.65, *, reuse=N
     photo = load_photo(path)
     mask = make_mask(photo, Settings()).mask
     return reconstruct_pairs(photo, mask, folder/"generation", folder, resolution, extent, strength,
-                             consensus, progress, recognition, strategy, skip)
+                             consensus, progress, recognition, strategy, skip, rank_only=rank_only, weighted=weighted)
 
 
 def _mask_symmetry_stats(mask):
@@ -188,8 +188,29 @@ def _mask_symmetry_stats(mask):
     return width, hole_ratio, upper_asym
 
 
+def rank_view_exclusions(views, extent, prior=None):
+    """Rank omitted inferred views by agreement with the retained silhouettes."""
+    if len(views) < 4:
+        return []
+    scores = []
+    for omitted in (view for view in views if view.inferred):
+        kept = [view for view in views if view is not omitted]
+        try:
+            hull = carve(kept, resolution=24, extent=extent, prior=prior)
+        except ValueError:
+            scores.append((omitted.name, -1.0))
+            continue
+        overlaps = [
+            agreement(np.isfinite(rasterize(hull.vertices, hull.faces, view)), view.mask)
+            for view in kept
+        ]
+        # Give the observed photograph half of the total weight.
+        scores.append((omitted.name, float((overlaps[0] + np.mean(overlaps[1:])) / 2)))
+    return [name for name, _ in sorted(scores, key=lambda item: item[1], reverse=True)]
+
+
 def reconstruct_pairs(photo, mask, generated, folder, resolution, extent, strength,
-                      consensus, progress, recognition, strategy="Automatic", excluded=frozenset()):
+                      consensus, progress, recognition, strategy="Automatic", excluded=frozenset(), *, rank_only=False, weighted=False):
     metadata, records = load_pairs(generated)
     y, x = np.where(mask)
     height = float(np.ptp(y) + 1)
@@ -254,10 +275,12 @@ def reconstruct_pairs(photo, mask, generated, folder, resolution, extent, streng
     if len(views) < 3:
         raise ValueError(f"Too few Wonder3D views remain after review and checks ({len(views)-1}). "
                          f"Inspect {folder}.")
+    if rank_only:
+        return rank_view_exclusions(views, extent, prior)
     result = reconstruct_views(views, int(resolution), extent, output_root=folder,
                                preparation_warnings=warnings, texture_consensus=consensus, prior=prior,
                                normal_observations=pairs if strength else (), normal_strength=strength,
-                               normal_basis=(1, 1, 1),
+                               normal_basis=(1, 1, 1), weighted=weighted,
                                progress=(lambda frac, label: progress(.55 + .44 * frac, label)) if progress else None)
     report = result.report
     basis_used = list(report.get("normal_refinement", {}).get("basis_used", [1, 1, 1]))
