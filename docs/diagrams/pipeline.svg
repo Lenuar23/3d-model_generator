@@ -1,0 +1,93 @@
+<?xml version='1.0' encoding='utf-8'?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+<rect width="1920" height="1080" fill="#f5f7fb" />
+<text x="64" y="59.480000000000004" font-family="Arial,sans-serif" font-size="19" font-weight="700" fill="#54657e">3D MODEL SOFT</text>
+<text x="64" y="122.32" font-family="Arial,sans-serif" font-size="46" font-weight="700" fill="#17253c">From a photograph to a 3D model</text>
+<text x="64" y="161.16" font-family="Arial,sans-serif" font-size="23" font-weight="400" fill="#63728b">Two generation modes Â· one web interface Â· GLB export</text>
+<rect x="64" y="207" width="1792" height="104" rx="18" fill="#ffffff" stroke="#dce3ee" />
+<text x="89" y="253.92000000000002" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#17253c">Object photo</text>
+<text x="89" y="284.48" font-family="Arial,sans-serif" font-size="19" font-weight="400" fill="#63728b">Upload in Gradio</text>
+<polyline points="405,260 508,260" fill="none" stroke="#8494aa" stroke-width="3" stroke-linejoin="round" />
+<polygon points="508,260 497.0,255.0 497.0,265.0" fill="#8494aa" />
+<text x="536" y="253.92000000000002" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#17253c">Select a mode</text>
+<text x="536" y="284.48" font-family="Arial,sans-serif" font-size="19" font-weight="400" fill="#63728b">Fast or Quality</text>
+<polyline points="811,260 901,260" fill="none" stroke="#8494aa" stroke-width="3" stroke-linejoin="round" />
+<polygon points="901,260 890.0,255.0 890.0,265.0" fill="#8494aa" />
+<text x="931" y="253.92000000000002" font-family="Arial,sans-serif" font-size="26" font-weight="700" fill="#17253c">HTTP request to the generation service</text>
+<text x="931" y="284.48" font-family="Arial,sans-serif" font-size="19" font-weight="400" fill="#63728b">Photo + settings Â· internal Docker Compose network</text>
+<rect x="64" y="340" width="1792" height="362" rx="18" fill="#eaf5f3" stroke="#cce6e1" />
+<text x="87" y="385.84" font-family="Arial,sans-serif" font-size="27" font-weight="700" fill="#116c69">FAST  /  Photo2Mesh + Wonder3D</text>
+<text x="87" y="418.32" font-family="Arial,sans-serif" font-size="21" font-weight="400" fill="#416b69">Wonder3D generates views Â· Photo2Mesh reconstructs geometry and bakes textures</text>
+<rect x="88" y="443" width="340" height="135" rx="18" fill="#ffffff" stroke="#dce3ee" />
+<rect x="106" y="463" width="5" height="28" rx="2" fill="#127f80" stroke="#127f80" />
+<text x="124" y="483.08" font-family="Arial,sans-serif" font-size="24" font-weight="700" fill="#17253c">CLIP + preparation</text>
+<text x="108" y="522.4" font-family="Arial,sans-serif" font-size="20" font-weight="400" fill="#57667e">Object classification</text>
+<text x="108" y="549.4" font-family="Arial,sans-serif" font-size="20" font-weight="400" fill="#57667e">Masking and cropping</text>
+<rect x="439" y="443" width="340" height="135" rx="18" fill="#ffffff" stroke="#dce3ee" />
+<rect x="457" y="463" width="5" height="28" rx="2" fill="#127f80" stroke="#127f80" />
+<text x="475" y="483.08" font-family="Arial,sans-serif" font-size="24" font-weight="700" fill="#17253c">Wonder3D Â· GPU</text>
+<text x="459" y="522.4" font-family="Arial,sans-serif" font-size="20" font-weight="400" fill="#57667e">6 RGB views</text>
+<text x="459" y="549.4" font-family="Arial,sans-serif" font-size="20" font-weight="400" fill="#57667e">6 normal maps</text>
+<rect x="790" y="443" width="340" height="135" rx="18" fill="#ffffff" stroke="#dce3ee" />
+<rect x="808" y="463" width="5" height="28" rx="2" fill="#127f80" stroke="#127f80" />
+<text x="826" y="483.08" font-family="Arial,sans-serif" font-size="24" font-weight="700" fill="#17253c">Photo2Mesh Â· CPU</text>
+<text x="810" y="522.4" font-family="Arial,sans-serif" font-size="20" font-weight="400" fill="#57667e">Segmentation and cameras</text>
+<text x="810" y="549.4" font-family="Arial,sans-serif" font-size="20" font-weight="400" fill="#57667e">Visual Hull + refinement</text>
+<rect x="1141" y="443" width="340" height="135" rx="18" fill="#ffffff" stroke="#dce3ee" />
+<rect x="1159" y="463" width="5" height="28" rx="2" fill="#127f80" stroke="#127f80" />
+<text x="1177" y="483.08" font-family="Arial,sans-serif" font-size="24" font-weight="700" fill="#17253c">Mesh validation</text>
+<text x="1161" y="522.4" font-family="Arial,sans-serif" font-size="20" font-weight="400" fill="#57667e">Watertightness and connectivity</text>
+<text x="1161" y="549.4" font-family="Arial,sans-serif" font-size="20" font-weight="400" fill="#57667e">Geometry checks</text>
+<rect x="1492" y="443" width="340" height="135" rx="18" fill="#ffffff" stroke="#dce3ee" />
+<rect x="1510" y="463" width="5" height="28" rx="2" fill="#127f80" stroke="#127f80" />
+<text x="1528" y="483.08" font-family="Arial,sans-serif" font-size="24" font-weight="700" fill="#17253c">Texture baking</text>
+<text x="1512" y="522.4" font-family="Arial,sans-serif" font-size="20" font-weight="400" fill="#57667e">Color projection</text>
+<text x="1512" y="549.4" font-family="Arial,sans-serif" font-size="20" font-weight="400" fill="#57667e">UV atlas â†’ GLB</text>
+<polyline points="428,510 439,510" fill="none" stroke="#168782" stroke-width="3" stroke-linejoin="round" />
+<polygon points="439,510 428.0,505.0 428.0,515.0" fill="#168782" />
+<polyline points="779,510 790,510" fill="none" stroke="#168782" stroke-width="3" stroke-linejoin="round" />
+<polygon points="790,510 779.0,505.0 779.0,515.0" fill="#168782" />
+<polyline points="1130,510 1141,510" fill="none" stroke="#168782" stroke-width="3" stroke-linejoin="round" />
+<polygon points="1141,510 1130.0,505.0 1130.0,515.0" fill="#168782" />
+<polyline points="1481,510 1492,510" fill="none" stroke="#168782" stroke-width="3" stroke-linejoin="round" />
+<polygon points="1492,510 1481.0,505.0 1481.0,515.0" fill="#168782" />
+<polyline points="1311,578 1311,610 960,610 960,578" fill="none" stroke="#168782" stroke-width="3" stroke-linejoin="round" />
+<polygon points="960,578 965,589 955,589" fill="#168782" />
+<text x="88" y="655.48" font-family="Arial,sans-serif" font-size="19" font-weight="700" fill="#116c69">If validation fails</text>
+<text x="426" y="655.48" font-family="Arial,sans-serif" font-size="19" font-weight="400" fill="#416b69">Retry resolution â†’ weighted silhouettes â†’ rank views and omit one inferred view</text>
+<rect x="64" y="725" width="1792" height="218" rx="18" fill="#edf0fb" stroke="#dbe1f4" />
+<text x="87" y="768.84" font-family="Arial,sans-serif" font-size="27" font-weight="700" fill="#4d5b9b">QUALITY  /  Hunyuan3D</text>
+<rect x="88" y="792" width="340" height="127" rx="18" fill="#ffffff" stroke="#dce3ee" />
+<rect x="106" y="812" width="5" height="28" rx="2" fill="#6572b8" stroke="#6572b8" />
+<text x="124" y="832.08" font-family="Arial,sans-serif" font-size="24" font-weight="700" fill="#17253c">Photo preparation</text>
+<text x="108" y="871.4" font-family="Arial,sans-serif" font-size="20" font-weight="400" fill="#57667e">Background removal</text>
+<rect x="439" y="792" width="340" height="127" rx="18" fill="#ffffff" stroke="#dce3ee" />
+<rect x="457" y="812" width="5" height="28" rx="2" fill="#6572b8" stroke="#6572b8" />
+<text x="475" y="832.08" font-family="Arial,sans-serif" font-size="24" font-weight="700" fill="#17253c">Hunyuan3D-2mini</text>
+<text x="459" y="871.4" font-family="Arial,sans-serif" font-size="20" font-weight="400" fill="#57667e">Shape generation Â· GPU</text>
+<rect x="790" y="792" width="340" height="127" rx="18" fill="#ffffff" stroke="#dce3ee" />
+<rect x="808" y="812" width="5" height="28" rx="2" fill="#6572b8" stroke="#6572b8" />
+<text x="826" y="832.08" font-family="Arial,sans-serif" font-size="24" font-weight="700" fill="#17253c">Photo colors</text>
+<text x="810" y="871.4" font-family="Arial,sans-serif" font-size="20" font-weight="400" fill="#57667e">Vertex color projection</text>
+<rect x="1141" y="792" width="340" height="127" rx="18" fill="#ffffff" stroke="#dce3ee" />
+<rect x="1159" y="812" width="5" height="28" rx="2" fill="#6572b8" stroke="#6572b8" />
+<text x="1177" y="832.08" font-family="Arial,sans-serif" font-size="24" font-weight="700" fill="#17253c">Hunyuan Paint</text>
+<text x="1161" y="871.4" font-family="Arial,sans-serif" font-size="20" font-weight="400" fill="#57667e">UV texturing Â· optional</text>
+<rect x="1492" y="792" width="340" height="127" rx="18" fill="#ffffff" stroke="#dce3ee" />
+<rect x="1510" y="812" width="5" height="28" rx="2" fill="#6572b8" stroke="#6572b8" />
+<text x="1528" y="832.08" font-family="Arial,sans-serif" font-size="24" font-weight="700" fill="#17253c">Export</text>
+<text x="1512" y="871.4" font-family="Arial,sans-serif" font-size="20" font-weight="400" fill="#57667e">GLB with colors or textures</text>
+<polyline points="428,854 439,854" fill="none" stroke="#6572b8" stroke-width="3" stroke-linejoin="round" />
+<polygon points="439,854 428.0,849.0 428.0,859.0" fill="#6572b8" />
+<polyline points="779,854 790,854" fill="none" stroke="#6572b8" stroke-width="3" stroke-linejoin="round" />
+<polygon points="790,854 779.0,849.0 779.0,859.0" fill="#6572b8" />
+<polyline points="1130,854 1141,854" fill="none" stroke="#6572b8" stroke-width="3" stroke-linejoin="round" />
+<polygon points="1141,854 1130.0,849.0 1130.0,859.0" fill="#6572b8" />
+<polyline points="1481,854 1492,854" fill="none" stroke="#6572b8" stroke-width="3" stroke-linejoin="round" />
+<polygon points="1492,854 1481.0,849.0 1481.0,859.0" fill="#6572b8" />
+<rect x="64" y="968" width="1792" height="75" rx="18" fill="#17253c" stroke="#17253c" />
+<text x="90" y="1008.4" font-family="Arial,sans-serif" font-size="20" font-weight="700" fill="#b9d1ef">FINISHED MODEL</text>
+<text x="405" y="1010.0" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#ffffff">3D preview in the browser</text>
+<text x="1015" y="1010.0" font-family="Arial,sans-serif" font-size="25" font-weight="700" fill="#ffffff">Download GLB</text>
+<text x="1440" y="1008.48" font-family="Arial,sans-serif" font-size="19" font-weight="400" fill="#b9d1ef">Rotate Â· zoom</text>
+</svg>
